@@ -1,9 +1,10 @@
 import math
 import numpy
 import pyopencl as cl
+import time
 
-TASKS = 1024
-OL_TASKS = int(TASKS / 4)
+TASKS = 1048576
+CL_TASKS = int(TASKS / 4)
 
 if __name__ == '__main__':
 
@@ -19,8 +20,10 @@ if __name__ == '__main__':
     dev_fianl = cl.Buffer(ctx, cl.mem_flags.WRITE_ONLY, final.nbytes)
     # prepare data for comparison.
     correct = numpy.zeros(TASKS, dtype=numpy.int32)
+    start_time = time.time();
     for i in range(0, TASKS):
         correct[i] = math.floor(math.sqrt(matrix[i]) * 10)
+    end_time = time.time();
 
     print('create command queue')
     queue = cl.CommandQueue(ctx, properties=cl.command_queue_properties.PROFILING_ENABLE)
@@ -34,12 +37,12 @@ if __name__ == '__main__':
     prg = cl.Program(ctx, kernels).build();
 
     print('execute kernel programs')
-    evt = prg.adjust_score(queue, (OL_TASKS, ), (1, ), dev_matrix, dev_fianl)
+    evt = prg.adjust_score(queue, (CL_TASKS, ), (1, ), dev_matrix, dev_fianl)
     print('wait for kernel executions')
     evt.wait();
     elapsed = 1e-9 * (evt.profile.end - evt.profile.start)
 
-    print('elapsed time: {}'.format(elapsed))
+    print('OpenCL elapsed time: {}, Python elapsed time: {}'.format(elapsed, (end_time - start_time)))
 
     cl.enqueue_read_buffer(queue, dev_fianl, final).wait()
     equal = numpy.all(correct == final)
