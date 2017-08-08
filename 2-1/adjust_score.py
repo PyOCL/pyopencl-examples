@@ -3,6 +3,7 @@ import numpy
 import pyopencl as cl
 
 TASKS = 1024
+OL_TASKS = int(TASKS / 4)
 
 if __name__ == '__main__':
 
@@ -33,7 +34,7 @@ if __name__ == '__main__':
     prg = cl.Program(ctx, kernels).build();
 
     print('execute kernel programs')
-    evt = prg.adjust_score(queue, (TASKS, ), (1, ), dev_matrix, dev_fianl)
+    evt = prg.adjust_score(queue, (OL_TASKS, ), (1, ), dev_matrix, dev_fianl)
     print('wait for kernel executions')
     evt.wait();
     elapsed = 1e-9 * (evt.profile.end - evt.profile.start)
