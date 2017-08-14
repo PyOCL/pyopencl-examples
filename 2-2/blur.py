@@ -26,11 +26,10 @@ if __name__ == '__main__':
     img_width = img.size[0]
     img_height = img.size[1]
     img_size = img_width * img_height
-    lstData = img.getdata()
 
     start_time = time.time();
     # prepare host memory for OpenCL
-    InputArrayData = numpy.array(lstData, dtype=Pixel)
+    InputArrayData = numpy.array(img.getdata(), dtype=Pixel)
     outArrayData = numpy.zeros(img_size, dtype=Pixel)
 
     # prepare device memory for OpenCL
