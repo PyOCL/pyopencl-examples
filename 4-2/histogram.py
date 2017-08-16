@@ -6,7 +6,8 @@ import pyopencl.array
 import time
 from PIL import Image
 
-WORK_GROUP_SIZE = 64;
+WORK_GROUP_SIZE = 64
+PIXEL_PER_WORK_ITEM = 256
 
 if __name__ == '__main__':
     print('create context ...')
@@ -41,8 +42,10 @@ if __name__ == '__main__':
     print('compile kernel code')
     prg = cl.Program(ctx, kernels).build()
 
-    r = img_size % WORK_GROUP_SIZE;
-    global_size = img_size if r == 0 else img_size + WORK_GROUP_SIZE - r
+    r = img_size % PIXEL_PER_WORK_ITEM;
+    work_item_size = int(img_size / PIXEL_PER_WORK_ITEM) if r == 0 else int(img_size / PIXEL_PER_WORK_ITEM) + 1
+    wr = work_item_size % WORK_GROUP_SIZE
+    global_size = work_item_size if wr == 0 else work_item_size + WORK_GROUP_SIZE - wr
 
     print('global size {}, local_size {}, image_size {}'.format(global_size, WORK_GROUP_SIZE, img_size))
     print('execute kernel programs')
@@ -58,10 +61,16 @@ if __name__ == '__main__':
     print('PIL elapsed time: {}'.format((end_time - start_time)))
 
     histogram = cl_output_data.get();
-    print ('=' * 20)
+    same = True
+    print('=' * 20)
     for i in range(256):
-        print ('R: {0}, G: {0}, B: {0} => ({1}, {2}, {3})'.format(i,
+        same &= (histogram[i] == cpu_histogram[512 + i])
+        same &= (histogram[256 + i] == cpu_histogram[256 + i])
+        same &= (histogram[512 + i] == cpu_histogram[i])
+        print ('GPU R: {0}, G: {0}, B: {0} => ({1}, {2}, {3})'.format(i,
                                                                   histogram[i],
                                                                   histogram[256 + i],
-                                                                  histogram[256 * 2 + i]))
-    print ('=' * 20)
+                                                                  histogram[512 + i]))
+
+    print('=' * 20)
+    print('The answer is {}'.format(same))

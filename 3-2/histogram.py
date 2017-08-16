@@ -52,10 +52,20 @@ if __name__ == '__main__':
     print('PIL elapsed time: {}'.format((end_time - start_time)))
 
     histogram = cl_output_data.get();
-    print ('=' * 20)
+    same = True
+    print('=' * 20)
     for i in range(256):
-        print ('R: {0}, G: {0}, B: {0} => ({1}, {2}, {3})'.format(i,
+        same &= (histogram[i] == cpu_histogram[512 + i])
+        same &= (histogram[256 + i] == cpu_histogram[256 + i])
+        same &= (histogram[512 + i] == cpu_histogram[i])
+        print ('CPU R: {0}, G: {0}, B: {0} => ({1}, {2}, {3})'.format(i,
+                                                                  cpu_histogram[512 + i],
+                                                                  cpu_histogram[256 + i],
+                                                                  cpu_histogram[i]))
+        print ('GPU R: {0}, G: {0}, B: {0} => ({1}, {2}, {3})'.format(i,
                                                                   histogram[i],
                                                                   histogram[256 + i],
-                                                                  histogram[256 * 2 + i]))
-    print ('=' * 20)
+                                                                  histogram[512 + i]))
+
+    print('=' * 20)
+    print('The answer is {}'.format(same))
