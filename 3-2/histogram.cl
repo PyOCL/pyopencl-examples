@@ -6,7 +6,7 @@ typedef struct {
 
 __kernel void histogram(__global Pixel* pixels, volatile __global unsigned int* result)
 {
-  unsigned int gid = get_group_id(0);
+  unsigned int gid = get_global_id(0);
 
   atomic_inc(result + pixels[gid].red);
   atomic_inc(result + pixels[gid].green + 256);
