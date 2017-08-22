@@ -21,6 +21,38 @@ if __name__ == '__main__':
     img_size = img_width * img_height
     lstData = img.getdata()
 
+    print('Image resolution : {} x {}'.format(img_width, img_height))
+    print(">>> Input global dimension : ")
+    global_dimension = None
+    local_dimension = None
+    strGDim = input()
+    lstGDim = strGDim.split(',')
+    lstGDim = [int(eval(x)) for x in lstGDim if x != '']
+    if len(lstGDim) == 2:
+        assert img_size == lstGDim[0] * lstGDim[1], "Global dimension should be sync with image size !"
+        global_dimension = lstGDim[0], lstGDim[1]
+    elif len(lstGDim) == 1:
+        global_dimension = tuple(lstGDim)
+    else:
+        assert False, "Incorrect global work item dimension."
+    print(' Global dimension : {}'.format(global_dimension))
+    print(">>> Input local dimension : ")
+    strLDim = input()
+    lstLDim = strLDim.split(',')
+    lstLDim = [int(eval(x)) for x in lstLDim if x != '']
+    if len(lstLDim) == 2:
+        local_dimension = lstLDim[0], lstLDim[1]
+    elif len(lstLDim) == 1:
+        local_dimension = tuple(lstLDim)
+    else:
+        assert False, "Incorrect local work item dimension."
+    print(' Local dimension : {}'.format(local_dimension))
+    def round_up(work_size, group_size):
+        num_of_group = work_size / group_size if work_size % group_size == 0 else work_size / group_size + 1
+        return int(num_of_group)
+    num_of_group = tuple([round_up(g_size, local_dimension[idx]) for idx, g_size in enumerate(global_dimension)])
+    print('===> g_dim = {}, l_dim = {}, num of group = {}'.format(global_dimension, local_dimension, num_of_group))
+
     start_time = time.time();
     Pixel = numpy.dtype([('blue', 'u1'), ('green', 'u1'), ('red', 'u1')])
     # prepare host memory for OpenCL
@@ -49,15 +81,6 @@ if __name__ == '__main__':
     np_height = numpy.int32(img_height)
 
     print('execute kernel programs')
-    # Tuning these dimensions to get better performance
-    global_dimension = (int(img_size / 10), 10)
-    local_dimension = (128, 5)
-    def round_up(work_size, group_size):
-        num_of_group = work_size / group_size if work_size % group_size == 0 else work_size / group_size + 1
-        return int(num_of_group)
-
-    num_of_group = tuple([round_up(g_size, local_dimension[idx]) for idx, g_size in enumerate(global_dimension)])
-    print('===> g_dim = {}, l_dim = {}, num of group = {}'.format(global_dimension, local_dimension, num_of_group))
     evt = prg.to_gray(queue, global_dimension, local_dimension,
                       np_width, np_height,
                       dev_input_array_data.data, dev_output_array_data.data)
@@ -81,4 +104,3 @@ if __name__ == '__main__':
     out_im.save(out_filename)
 
     print('Results is OK')
-
