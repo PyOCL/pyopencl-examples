@@ -15,7 +15,7 @@ __kernel void to_blur(int aMaskSize,
                       __global Pixel* aBufferIn,
                       __global Pixel* aBufferOut) {
   int global_id = get_global_id(0);
-  int offset = aMaskSize / 2;
+  int offset = aMaskSize >> 1;
   int sum_r = 0;
   int sum_g = 0;
   int sum_b = 0;

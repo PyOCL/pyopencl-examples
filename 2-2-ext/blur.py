@@ -7,9 +7,6 @@ import time
 from PIL import Image
 from PIL import ImageFilter
 
-TASKS = 1048576
-CL_TASKS = int(TASKS / 4)
-
 def blur_img_by_PIL(img, filename, ext):
     s = time.time()
     blurred_image = img.filter(ImageFilter.BLUR)
@@ -27,14 +24,18 @@ if __name__ == '__main__':
     print('prepare data ... ')
     filename = '7680x4320'
     ext = '.jpg'
-    mask_size = 15
+    # Set mask_size to 5, because it generates almost same quality as PIL.
+    mask_size = 5
     img = Image.open(os.path.join(os.path.dirname(__file__), filename + ext))
     img_width = img.size[0]
     img_height = img.size[1]
     img_size = img_width * img_height
     lstData = img.getdata()
 
+    blur_img_by_PIL(img, filename, ext)
+
     start_time = time.time();
+    # Define specific data structure for your own purpose.
     Pixel = numpy.dtype([('blue', 'u1'), ('green', 'u1'), ('red', 'u1')])
     # prepare host memory for OpenCL
     input_data_array = numpy.array(lstData, dtype=Pixel)
