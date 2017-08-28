@@ -80,6 +80,8 @@ if __name__ == '__main__':
 
     out_filename = os.path.join('out_' + filename + ext)
     out_im= Image.fromarray(outRS, 'RGBA')
+    if out_im.mode == 'RGBA':
+        out_im = out_im.convert('RGB')
     out_im.save(out_filename)
 
     print('Results is OK')
