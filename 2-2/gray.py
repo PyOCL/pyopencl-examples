@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     print(">>> Input 1 (using uchar), 2 (using uchar4) ")
     strChoice = input()
-    start_time = time.time();
+    start_time = time.time()
     # prepare host memory for OpenCL
     if strChoice == '1':
         pixel_type = numpy.dtype(('B', 1))
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     time_devicedata_loaded = time.time()
 
     print('compile kernel code')
-    prg = cl.Program(ctx, kernels).build();
+    prg = cl.Program(ctx, kernels).build()
     time_kernel_compilation = time.time()
 
     np_width = numpy.int32(img_width)
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     evt = kernel_func(queue, (img_size, ), (1, ),
                       dev_input_array_data.data, dev_output_array_data.data)
     print('wait for kernel executions')
-    evt.wait();
+    evt.wait()
     elapsed = 1e-9 * (evt.profile.end - evt.profile.start)
 
     time_before_readback = time.time()
@@ -72,9 +72,9 @@ if __name__ == '__main__':
     time_after_readback = time.time()
 
     print('Prepare host data took       : {}'.format(time_hostdata_loaded - start_time))
-    print('Create CTX/QUEUE took        : {}'.format(time_ctx_queue_creation-time_hostdata_loaded))
+    print('Create CTX/QUEUE took        : {}'.format(time_ctx_queue_creation - time_hostdata_loaded))
     print('Upload data to device took   : {}'.format(time_devicedata_loaded - time_ctx_queue_creation))
-    print('Compile kernel took          : {}'.format(time_kernel_compilation-time_devicedata_loaded))
+    print('Compile kernel took          : {}'.format(time_kernel_compilation - time_devicedata_loaded))
     print('OpenCL elapsed time          : {}'.format(elapsed))
     print('Offload data from device took: {}'.format(time_after_readback - time_before_readback))
 
@@ -85,4 +85,3 @@ if __name__ == '__main__':
     out_im.save(out_filename)
 
     print('Results is OK')
-

@@ -26,7 +26,7 @@ if __name__ == '__main__':
     img_height = img.size[1]
     img_size = img_width * img_height
 
-    start_time = time.time();
+    start_time = time.time()
     # prepare host memory for OpenCL
     img_bytes = img.tobytes()
     time_hostdata_loaded = time.time()
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     time_devicedata_loaded = time.time()
 
     print('compile kernel code')
-    prg = cl.Program(ctx, kernels).build();
+    prg = cl.Program(ctx, kernels).build()
     time_kernel_compilation = time.time()
 
     np_masksize = numpy.int32(mask_size)
@@ -62,7 +62,7 @@ if __name__ == '__main__':
                       np_masksize,
                       input_image, output_image)
     print('wait for kernel executions')
-    evt.wait();
+    evt.wait()
     elapsed = 1e-9 * (evt.profile.end - evt.profile.start)
 
 
@@ -88,4 +88,3 @@ if __name__ == '__main__':
     out_im.save(out_filename)
 
     print('Results is OK')
-

@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     blur_img_by_PIL(img, filename, ext)
 
-    start_time = time.time();
+    start_time = time.time()
     # Define specific data structure for your own purpose.
     Pixel = numpy.dtype([('blue', 'u1'), ('green', 'u1'), ('red', 'u1')])
     # prepare host memory for OpenCL
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     time_devicedata_loaded = time.time()
 
     print('compile kernel code')
-    prg = cl.Program(ctx, kernels).build();
+    prg = cl.Program(ctx, kernels).build()
     time_kernel_compilation = time.time()
 
     np_masksize = numpy.int32(mask_size)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
                       np_masksize, np_width, np_height,
                       dev_input_array_data.data, dev_output_array_data.data)
     print('wait for kernel executions')
-    evt.wait();
+    evt.wait()
     elapsed = 1e-9 * (evt.profile.end - evt.profile.start)
 
     time_before_readback = time.time()
@@ -87,4 +87,3 @@ if __name__ == '__main__':
     out_im.save(out_filename)
 
     print('Results is OK')
-
