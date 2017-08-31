@@ -1,5 +1,5 @@
 
-__kernel void exec_work_item() {
+__kernel void exec_work_item(int aUnused) {
   int global_size_0 = get_global_size(0);
   int global_size_1 = get_global_size(1);
   int global_id_0 = get_global_id(0);

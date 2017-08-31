@@ -65,11 +65,15 @@ if __name__ == '__main__':
     # np_height = numpy.int32(img_height)
 
     print('execute kernel programs')
+    unused = numpy.int32(0);
     evt = None
     if offset_dimension != None:
-        evt = prg.exec_work_item(queue, global_dimension, local_dimension, offset_dimension)
+        evt = prg.exec_work_item(queue, global_dimension, local_dimension,
+                                 unused,
+                                 global_offset=offset_dimension)
     else:
-        evt = prg.exec_work_item(queue, global_dimension, local_dimension)
+        evt = prg.exec_work_item(queue, global_dimension, local_dimension,
+                                 unused)
     print('wait for kernel executions')
     evt.wait()
     elapsed = 1e-9 * (evt.profile.end - evt.profile.start)
