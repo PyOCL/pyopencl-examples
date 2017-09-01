@@ -1,9 +1,3 @@
-
-float calc_linear_distance(float x1, float y1, float x2, float y2)
-{
-  return sqrt(pown(x2 - x1, 2) + pown(y2 - y1, 2));
-}
-
 __kernel void do_clustering(int num_of_clusters,
                             int num_of_points,
                             __global float* centers_x,
@@ -28,7 +22,7 @@ __kernel void do_clustering(int num_of_clusters,
   for (int i = 0; i < num_of_clusters; i++) {
     c_x = centers_x[i];
     c_y = centers_y[i];
-    dist = calc_linear_distance(x, y, c_x, c_y);
+    dist = distance((float2) (x, y), (float2) (c_x, c_y));
     // printf("[do_c][%d] compare to cid(%d)(%f, %f), dist = %f \n",
     //   global_id, i, c_x, c_y, dist);
     if (dist < min) {
