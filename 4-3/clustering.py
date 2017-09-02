@@ -30,7 +30,7 @@ def plot_grouping_result(point_cids, group_ids, point_info):
 
 if __name__ == '__main__':
     print('load program from cl source file')
-    f = open('clustering.c', 'r')
+    f = open('clustering.cl', 'r')
     kernels = ''.join(f.readlines())
     f.close()
 
@@ -103,14 +103,14 @@ if __name__ == '__main__':
                                 dev_points_x.data, dev_points_y.data,
                                 dev_clusters_id.data)
         evt.wait()
-        elapsed += 1e-9 * (evt.profile.end - evt.profile.start)
+        elapsed += (1e-9 * (evt.profile.end - evt.profile.start))
         evt = prg.calc_centroid(queue, (numOfGroups,), None,
                                 np_num_of_clusters, np_num_of_points,
                                 dev_centers_x.data, dev_centers_y.data,
                                 dev_points_x.data, dev_points_y.data,
                                 dev_clusters_id.data)
         evt.wait()
-        elapsed += 1e-9 * (evt.profile.end - evt.profile.start)
+        elapsed += (1e-9 * (evt.profile.end - evt.profile.start))
 
         time_before_readback = time.time()
         tmp_clusters_ids = dev_clusters_id.get()

@@ -8,7 +8,7 @@ from PIL import Image
 
 if __name__ == '__main__':
     print('load program from cl source file')
-    f = open('gray.c', 'r')
+    f = open('gray.cl', 'r')
     kernels = ''.join(f.readlines())
     f.close()
 
@@ -60,12 +60,14 @@ if __name__ == '__main__':
     print('execute kernel programs')
     # Choose different kernel function according to the choice.
     kernel_func = prg.to_gray if strChoice == '1' else prg.to_gray4
-    evt = kernel_func(queue, (img_size, ), (1, ),
-                      dev_input_array_data.data, dev_output_array_data.data)
-    print('wait for kernel executions')
-    evt.wait()
-    elapsed = 1e-9 * (evt.profile.end - evt.profile.start)
-
+    elapsed = 0
+    for i in range(50):
+        evt = kernel_func(queue, (img_size, ), (1, ),
+                        dev_input_array_data.data, dev_output_array_data.data)
+        # print('wait for kernel executions')
+        evt.wait()
+        elapsed += (1e-9 * (evt.profile.end - evt.profile.start))
+    elapsed /= 50.0
     time_before_readback = time.time()
     print(' out shape = {}'.format(dev_output_array_data.shape))
     outRS = dev_output_array_data.reshape(img.size[1], img.size[0], 4).get()
