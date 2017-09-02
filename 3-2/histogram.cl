@@ -1,7 +1,7 @@
 typedef struct {
-  unsigned char blue;
-  unsigned char green;
   unsigned char red;
+  unsigned char green;
+  unsigned char blue;
 } Pixel;
 
 __kernel void histogram(__global Pixel* pixels, volatile __global unsigned int* result)

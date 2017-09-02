@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     start_time = time.time()
     # Define specific data structure for your own purpose.
-    Pixel = numpy.dtype([('blue', 'u1'), ('green', 'u1'), ('red', 'u1')])
+    Pixel = numpy.dtype([('red', 'u1'), ('green', 'u1'), ('blue', 'u1')])
     # prepare host memory for OpenCL
     input_data_array = numpy.array(lstData, dtype=Pixel)
     output_data_array = numpy.zeros(img_size, dtype=Pixel)

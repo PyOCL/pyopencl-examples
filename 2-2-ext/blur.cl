@@ -1,8 +1,8 @@
 
 typedef struct {
-  unsigned char blue;
-  unsigned char green;
   unsigned char red;
+  unsigned char green;
+  unsigned char blue;
 } Pixel;
 
 int convert_row_col_2_id(int w, int r, int c) {

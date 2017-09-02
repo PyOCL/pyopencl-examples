@@ -1,9 +1,9 @@
 #define PIXELS_PER_ITEM 256
 
 typedef struct {
-  unsigned char blue;
-  unsigned char green;
   unsigned char red;
+  unsigned char green;
+  unsigned char blue;
 } Pixel;
 
 __kernel void histogram(__global Pixel* pixels, unsigned long max_size, volatile __global unsigned int* result)
