@@ -37,15 +37,24 @@ if __name__ == '__main__':
     print('prepare data ... ')
     # The number of points randomly generated
     random.seed()
-    num_points = 100
+    print(">>> How many points to be clustered ? ")
+    strNum = input()
+    num_points = int(strNum) if strNum != '' else 0
+    assert num_points >= 1, "Please input a number >= 1"
+
     point_ids = list(range(0, num_points))
     point_info = {point_id: (random.random() * 100, random.random() * 100) for point_id in point_ids}
     pointX = [point_info[v][0] for v in point_info]
     pointY = [point_info[v][1] for v in point_info]
 
     # The number of group you want to divide.
-    numOfGroups = 5
-    group_id_set = list(range(0, numOfGroups))
+    print(">>> How many clusters you want ? ")
+    strGroup = input()
+    num_of_groups = int(strGroup) if strGroup != '' else 0
+    assert num_of_groups >= 1, "Please input a number >= 1."
+    assert num_points >= num_of_groups, "Number of points should >= number of clusters."
+
+    group_id_set = list(range(0, num_of_groups))
     cluster_centers_X = []
     cluster_centers_Y = []
     for idx in group_id_set:
@@ -53,12 +62,7 @@ if __name__ == '__main__':
         cluster_centers_Y.append(pointY[idx])
     cluster_ids = []
     for x in range(num_points):
-        cluster_ids.append(x if x < numOfGroups else -1)
-    # print('Init cluster id : {}'.format(cluster_ids))
-    # for idx in range(num_points):
-    #     print('Init Points Info : {} - ({}, {})'.format(idx, pointX[idx], pointY[idx]))
-    # for idx in range(numOfGroups):
-    #     print('Init Center Info : {} - ({}, {})'.format(idx, cluster_centers_X[idx], cluster_centers_Y[idx]))
+        cluster_ids.append(x if x < num_of_groups else -1)
 
     start_time = time.time()
     # prepare host memory for OpenCL
@@ -89,7 +93,7 @@ if __name__ == '__main__':
     prg = cl.Program(ctx, kernels).build()
     time_kernel_compilation = time.time()
 
-    np_num_of_clusters = numpy.int32(numOfGroups)
+    np_num_of_clusters = numpy.int32(num_of_groups)
     np_num_of_points = numpy.int32(num_points)
     print('execute kernel programs')
     print('wait for kernel executions')
@@ -104,7 +108,7 @@ if __name__ == '__main__':
                                 dev_clusters_id.data)
         evt.wait()
         elapsed += (1e-9 * (evt.profile.end - evt.profile.start))
-        evt = prg.calc_centroid(queue, (numOfGroups,), None,
+        evt = prg.calc_centroid(queue, (num_of_groups,), None,
                                 np_num_of_clusters, np_num_of_points,
                                 dev_centers_x.data, dev_centers_y.data,
                                 dev_points_x.data, dev_points_y.data,

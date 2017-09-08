@@ -29,6 +29,7 @@ if __name__ == '__main__':
     start_time = time.time()
     # prepare host memory for OpenCL
     img_bytes = img.tobytes()
+
     time_hostdata_loaded = time.time()
 
     print('create context ...')
@@ -37,7 +38,8 @@ if __name__ == '__main__':
     queue = cl.CommandQueue(ctx, properties=cl.command_queue_properties.PROFILING_ENABLE)
     time_ctx_queue_creation = time.time()
 
-    dev_image_format = cl.ImageFormat(cl.channel_order.RGBA, cl.channel_type.UNSIGNED_INT8)
+    dev_image_format = cl.ImageFormat(cl.channel_order.RGBA,
+                                      cl.channel_type.UNSIGNED_INT8)
     # prepare device memory for OpenCL
     print('prepare device memory for input / output')
     input_image = cl.Image(ctx,
