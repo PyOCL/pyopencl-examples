@@ -9,7 +9,7 @@ from PIL import Image
 if __name__ == '__main__':
 
     print('load program from cl source file')
-    f = open('histogram.cl', 'r')
+    f = open('histogram.cl', 'r', encoding='utf-8')
     kernels = ''.join(f.readlines())
     f.close()
 

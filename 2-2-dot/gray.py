@@ -8,7 +8,7 @@ from PIL import Image
 
 if __name__ == '__main__':
     print('load program from cl source file')
-    f = open('gray.cl', 'r')
+    f = open('gray.cl', 'r', encoding='utf-8')
     kernels = ''.join(f.readlines())
     f.close()
 

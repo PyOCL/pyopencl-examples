@@ -11,7 +11,7 @@ CL_TASKS = int(TASKS / 4)
 
 if __name__ == '__main__':
     print('load program from cl source file')
-    f = open('blur.cl', 'r')
+    f = open('blur.cl', 'r', encoding='utf-8')
     kernels = ''.join(f.readlines())
     f.close()
 

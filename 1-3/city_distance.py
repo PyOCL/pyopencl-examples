@@ -9,7 +9,7 @@ MAP_SIZE = int(CITIES * (CITIES - 1) / 2)
 if __name__ == '__main__':
 
     print('load program from cl source file')
-    f = open('city_distance.cl', 'r')
+    f = open('city_distance.cl', 'r', encoding='utf-8')
     kernels = ''.join(f.readlines())
     f.close()
 

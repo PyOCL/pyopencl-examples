@@ -30,7 +30,7 @@ def plot_grouping_result(point_cids, group_ids, point_info):
 
 if __name__ == '__main__':
     print('load program from cl source file')
-    f = open('clustering.cl', 'r')
+    f = open('clustering.cl', 'r', encoding='utf-8')
     kernels = ''.join(f.readlines())
     f.close()
 

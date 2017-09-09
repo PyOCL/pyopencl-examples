@@ -22,7 +22,7 @@ def get_dimension_info_from_input():
 
 if __name__ == '__main__':
     print('load program from cl source file')
-    f = open('workitems.cl', 'r')
+    f = open('workitems.cl', 'r', encoding='utf-8')
     kernels = ''.join(f.readlines())
     f.close()
 

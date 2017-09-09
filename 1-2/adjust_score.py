@@ -8,7 +8,7 @@ TASKS = 1048576
 if __name__ == '__main__':
 
     print('load program from cl source file')
-    f = open('adjust_score.cl', 'r')
+    f = open('adjust_score.cl', 'r', encoding='utf-8')
     kernels = ''.join(f.readlines())
     f.close()
 

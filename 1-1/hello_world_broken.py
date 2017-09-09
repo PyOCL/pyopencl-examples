@@ -11,7 +11,7 @@ if __name__ == '__main__':
     queue = cl.CommandQueue(ctx)
 
     print('load program from cl source file')
-    f = open('hello_world_broken.cl', 'r')
+    f = open('hello_world_broken.cl', 'r', encoding='utf-8')
     kernels = ''.join(f.readlines())
     f.close()
 
