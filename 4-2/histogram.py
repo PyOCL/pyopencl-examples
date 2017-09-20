@@ -17,7 +17,7 @@ if __name__ == '__main__':
     f.close()
 
     print('prepare data ... ')
-    filename = '7680x4320.jpg'
+    filename = 'smallone.jpeg'
     img = Image.open(os.path.join(os.path.dirname(__file__), filename))
     img_width = img.size[0]
     img_height = img.size[1]
@@ -70,9 +70,9 @@ if __name__ == '__main__':
     same = True
     print('=' * 20)
     for i in range(256):
-        same &= (histogram[i] == cpu_histogram[512 + i])
+        same &= (histogram[i] == cpu_histogram[i])
         same &= (histogram[256 + i] == cpu_histogram[256 + i])
-        same &= (histogram[512 + i] == cpu_histogram[i])
+        same &= (histogram[512 + i] == cpu_histogram[512 + i])
         print ('GPU R: {0}, G: {0}, B: {0} => ({1}, {2}, {3})'.format(i,
                                                                   histogram[i],
                                                                   histogram[256 + i],
