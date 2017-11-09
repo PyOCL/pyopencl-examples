@@ -17,7 +17,7 @@ if __name__ == '__main__':
     f.close()
 
     print('prepare data ... ')
-    filename = 'smallone.jpeg'
+    filename = '7680x4320.jpg'
     img = Image.open(os.path.join(os.path.dirname(__file__), filename))
     img_width = img.size[0]
     img_height = img.size[1]
