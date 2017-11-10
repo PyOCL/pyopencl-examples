@@ -30,7 +30,6 @@ if __name__ == '__main__':
     img_width = img.size[0]
     img_height = img.size[1]
     img_size = img_width * img_height
-    lstData = img.getdata()
 
     blur_img_by_PIL(img, filename, ext)
 
@@ -40,7 +39,8 @@ if __name__ == '__main__':
                          ('green', 'u1'),
                          ('blue', 'u1')])
     # prepare host memory for OpenCL
-    input_data_array = numpy.array(lstData, dtype=Pixel)
+    im_arr = numpy.fromstring(img.tobytes(), dtype=Pixel)
+    input_data_array = im_arr.reshape((img_width, img_height, 1))
     output_data_array = numpy.zeros(img_size, dtype=Pixel)
     time_hostdata_loaded = time.time()
 

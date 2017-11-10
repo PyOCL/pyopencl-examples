@@ -26,7 +26,8 @@ if __name__ == '__main__':
     start_time = time.time()
     Pixel = numpy.dtype([('red', 'u1'), ('green', 'u1'), ('blue', 'u1')])
     # prepare host memory for OpenCL
-    input_data = numpy.array(img.getdata(), dtype=Pixel)
+    im_arr = numpy.fromstring(img.tobytes(), dtype=Pixel)
+    input_data = im_arr.reshape((img_width, img_height, 1))
     output_data = numpy.zeros(256 * 3, dtype=numpy.uint32)
     time_hostdata_loaded = time.time()
 
