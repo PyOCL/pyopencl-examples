@@ -26,16 +26,10 @@ if __name__ == '__main__':
     strChoice = input()
     start_time = time.time()
     # prepare host memory for OpenCL
-    if strChoice == '1':
-        pixel_type = numpy.dtype(('B', 1))
-        im_arr = numpy.fromstring(img.tobytes(), dtype=pixel_type)
-        input_data_array = im_arr.reshape((img_width, img_height, 4))
-        output_data_array = numpy.zeros(img_size * 4, dtype=pixel_type)
-    else:
-        pixel_type = numpy.dtype(('B', 4))
-        im_arr = numpy.fromstring(img.tobytes(), dtype=pixel_type)
-        input_data_array = im_arr.reshape((img_width, img_height, 4))
-        output_data_array = numpy.zeros(img_size, dtype=pixel_type)
+    pixel_type = numpy.dtype(('B', 1))
+    im_arr = numpy.fromstring(img.tobytes(), dtype=pixel_type)
+    input_data_array = im_arr.reshape((img_size * 4))
+    output_data_array = numpy.zeros(img_size * 4, dtype=pixel_type)
     time_hostdata_loaded = time.time()
 
     # create opencl context & queue

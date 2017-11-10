@@ -27,16 +27,10 @@ if __name__ == '__main__':
     start_time = time.time()
 
     # prepare host memory for OpenCL
-    if strChoice == '1':
-        pixel_type = numpy.dtype(('B', 1))
-        im_arr = numpy.fromstring(img.tobytes(), dtype=pixel_type)
-        input_data_array = im_arr.reshape((img_width, img_height, 4))
-        output_data_array = numpy.zeros(img_size * 4, dtype=pixel_type)
-    else:
-        pixel_type = numpy.dtype(('B', 4))
-        im_arr = numpy.fromstring(img.tobytes(), dtype=pixel_type)
-        input_data_array = im_arr.reshape((img_width, img_height, 4))
-        output_data_array = numpy.zeros(img_size, dtype=pixel_type)
+    pixel_type = numpy.dtype(('B', 1))
+    im_arr = numpy.fromstring(img.tobytes(), dtype=pixel_type)
+    input_data_array = im_arr.reshape((img_size * 4))
+    output_data_array = numpy.zeros(img_size * 4, dtype=pixel_type)
     time_hostdata_loaded = time.time()
 
     # create opencl context & queue
@@ -65,7 +59,7 @@ if __name__ == '__main__':
     elapsed = 0
     for i in range(50):
         evt = kernel_func(queue, (img_size, ), (1, ),
-                        dev_input_array_data.data, dev_output_array_data.data)
+                          dev_input_array_data.data, dev_output_array_data.data)
         # print('wait for kernel executions')
         evt.wait()
         elapsed += (1e-9 * (evt.profile.end - evt.profile.start))
