@@ -104,3 +104,5 @@ ENV/
 out_*.jpg
 pil_out_*.jpg
 
+# vscode IDE config
+.vscode
