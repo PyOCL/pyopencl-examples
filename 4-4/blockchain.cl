@@ -24,14 +24,14 @@ int calc_hash(__global unsigned char* data,
 
 __kernel void find_nonce(__global unsigned char* data,
                          __global unsigned char* hash,
-                         volatile __global unsigned long* nonce,
+                         volatile __global unsigned int* nonce,
                          int data_length,
                          int difficulty,
                          int nonce_group_size) {
 
     int global_id = get_global_id(0);
-    long nonce_start = nonce_group_size * global_id;
-    long nonce_end = nonce_start + nonce_group_size;
+    int nonce_start = nonce_group_size * global_id;
+    int nonce_end = nonce_start + nonce_group_size;
     unsigned char local_hash[32];
     int i, j;
 

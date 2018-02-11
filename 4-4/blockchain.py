@@ -18,7 +18,7 @@ if __name__ == '__main__':
     data_str = 'abc'
     input_data = numpy.fromstring(data_str, dtype=numpy.uint8)
     output_data = numpy.zeros(32, dtype=numpy.uint8)
-    nonce = numpy.zeros(1, dtype=numpy.int64)
+    nonce = numpy.zeros(1, dtype=numpy.uint32)
     time_hostdata_loaded = time.time()
 
     print('create context ...')
