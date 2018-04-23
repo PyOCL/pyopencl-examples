@@ -1,15 +1,21 @@
 #include "sha256.cl"
+int calc_hash(__global unsigned char* data,
+              unsigned char* hash,
+              int data_length,
+              int difficulty,
+              unsigned int nonce);
 
 int calc_hash(__global unsigned char* data,
               unsigned char* hash,
               int data_length,
               int difficulty,
-              long nonce) {
+              unsigned int nonce) {
     int i;
     int matched;
+
     SHA256_CTX ctx;
     sha256_init(&ctx);
-    sha256_update(&ctx, nonce, data, data_length);
+    sha256_update(&ctx, (long) nonce, data, data_length);
 	sha256_final(&ctx, hash);
 
     matched = 1;
@@ -30,10 +36,10 @@ __kernel void find_nonce(__global unsigned char* data,
                          int nonce_group_size) {
 
     int global_id = get_global_id(0);
-    int nonce_start = nonce_group_size * global_id;
-    int nonce_end = nonce_start + nonce_group_size;
+    unsigned int nonce_start = nonce_group_size * global_id;
+    unsigned int nonce_end = nonce_start + nonce_group_size;
     unsigned char local_hash[32];
-    int i, j;
+    unsigned int i, j;
 
     for (i = nonce_start; i < nonce_end; i++) {
         if (calc_hash(data, local_hash, data_length, difficulty, i) == 1) {

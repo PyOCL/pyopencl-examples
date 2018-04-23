@@ -29,6 +29,7 @@ typedef struct {
 void sha256_init(SHA256_CTX *ctx);
 void sha256_update(SHA256_CTX *ctx, long nonce, __global BYTE* data, size_t len);
 void sha256_final(SHA256_CTX *ctx, BYTE* hash);
+void sha256_transform(SHA256_CTX *ctx, const BYTE* data);
 
 /****************************** MACROS ******************************/
 #define ROTLEFT(a,b) (((a) << (b)) | ((a) >> (32-(b))))
