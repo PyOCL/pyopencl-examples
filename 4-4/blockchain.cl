@@ -16,7 +16,7 @@ int calc_hash(__global unsigned char* data,
     SHA256_CTX ctx;
     sha256_init(&ctx);
     sha256_update(&ctx, (long) nonce, data, data_length);
-	sha256_final(&ctx, hash);
+    sha256_final(&ctx, hash);
 
     matched = 1;
     for (i = 0; i < difficulty && matched == 1; i++) {
@@ -40,10 +40,9 @@ __kernel void find_nonce(__global unsigned char* data,
     unsigned int nonce_end = nonce_start + nonce_group_size;
     unsigned char local_hash[32];
     unsigned int i, j;
-
-    for (i = nonce_start; i < nonce_end; i++) {
+    // We use nonce == 0 to prevent more computation when other work items had found the nonce.
+    for (i = nonce_start; i < nonce_end && *nonce == 0; i++) {
         if (calc_hash(data, local_hash, data_length, difficulty, i) == 1) {
-            // TODO: need a atomic memory copy
             printf("hash found: ");
             for (j = 0; j < 32; j++) {
                 printf("%02x", local_hash[j]);

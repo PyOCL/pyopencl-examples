@@ -12,6 +12,11 @@
               This implementation uses little endian byte order.
 *********************************************************************/
 
+/*********************************************************************
+* This is a OpenCL porting version by John Hu. Original source is from:
+*    https://github.com/B-Con/crypto-algorithms/blob/master/sha256.c
+*********************************************************************/
+
 #define SHA256_BLOCK_SIZE 32            // SHA256 outputs a 32 byte digest
 
 /**************************** DATA TYPES ****************************/
