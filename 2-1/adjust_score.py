@@ -42,7 +42,7 @@ if __name__ == '__main__':
     elapsed = 1e-9 * (evt.profile.end - evt.profile.start)
 
     time_before_readback = time.time()
-    cl.enqueue_read_buffer(queue, dev_fianl, final).wait()
+    cl.enqueue_copy(queue, final, dev_fianl).wait()
     time_after_readback = time.time()
 
     # prepare data for comparison.

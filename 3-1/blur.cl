@@ -13,7 +13,7 @@ __kernel void to_blur(int aMaskSize,
   int sum_g = 0;
   int sum_b = 0;
   int width = get_image_width(srcImg);
-  int height = get_image_height(srcImg); 
+  int height = get_image_height(srcImg);
   int row_n = global_id / width;
   int col_n = global_id % width;
   uint4 color;

@@ -72,8 +72,8 @@ if __name__ == '__main__':
     buffer = numpy.zeros(img_width * img_height * 4, numpy.uint8)
     origin = (0, 0, 0)
     region = (img_width, img_height, 1)
-    cl.enqueue_read_image(queue, output_image,
-                          origin, region, buffer).wait()
+    cl.enqueue_copy(queue, dest=buffer, src=output_image,
+                          origin=origin, region=region).wait()
     time_after_readback = time.time()
 
     print('Prepare host data took       : {}'.format(time_hostdata_loaded - start_time))
